@@ -1,0 +1,61 @@
+{
+  "name": "spacefit",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:rules": "firebase emulators:exec --only auth,firestore --project demo-spacefit \"vitest run tests/firebase.rules.test.ts\"",
+    "preview": "vite preview --host 127.0.0.1",
+    "dev:emulator": "vite --host 127.0.0.1 --mode emulator --port 5175 --strictPort",
+    "test:firebase:inner": "vitest run tests/firebase.rules.test.ts && playwright test --config=playwright.firebase.config.ts",
+    "test:firebase": "firebase emulators:exec --only auth,firestore --project demo-spacefit \"npm run test:firebase:inner\"",
+    "format": "prettier --write src tests scripts *.ts *.js *.json *.html README.md"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tailwindcss/vite": "^4.1.0",
+    "dexie": "^4.2.0",
+    "firebase": "^12.0.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.65.0",
+    "react-router-dom": "^7.9.0",
+    "tailwindcss": "^4.1.0",
+    "zod": "^4.1.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^9.39.0",
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "@playwright/test": "^1.56.0",
+    "@testing-library/jest-dom": "^6.9.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.39.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "fake-indexeddb": "^6.2.6",
+    "firebase-tools": "^15.34.1",
+    "globals": "^16.5.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vite": "^7.1.0",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  }
+}

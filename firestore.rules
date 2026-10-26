@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owns(uid) { return request.auth != null && request.auth.uid == uid; }
+    function validProject() {
+      let p = request.resource.data;
+      return p.keys().hasOnly(['schemaVersion','id','name','rooms','openings','furniture','unit','createdAt','updatedAt','revision'])
+        && p.schemaVersion == 1 && p.name is string && p.name.size() > 0 && p.name.size() <= 100
+        && p.id is string && p.rooms is list && p.rooms.size() > 0 && p.rooms.size() <= 30
+        && p.openings is list && p.openings.size() <= 200 && p.furniture is list && p.furniture.size() <= 500
+        && p.unit in ['imperial','metric'] && p.createdAt is string && p.updatedAt is string && p.revision is int;
+    }
+    match /users/{uid}/projects/{projectId} {
+      allow read, delete: if owns(uid);
+      allow create: if owns(uid) && validProject() && request.resource.data.id == projectId && request.resource.data.revision == 1;
+      allow update: if owns(uid) && validProject() && request.resource.data.id == projectId
+        && request.resource.data.revision == resource.data.revision + 1
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+  }
+}
